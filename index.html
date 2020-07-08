@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="format-detection" content="telephone=no">
+      <meta name="msapplication-tap-highlight" content="no">
+      <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+      <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+      <title>ready demo</title>
+      <script>
+         $(document).ready(function(){
+             //alert("s");
+         
+             
+            // onSuccess Callback
+            // This method accepts a Position object, which contains the
+            // current GPS coordinates
+            //
+            var onSuccess = function(position) {
+               /* alert('Latitude: '          + position.coords.latitude          + '\n' +
+                      'Longitude: '         + position.coords.longitude         + '\n' +
+                      'Altitude: '          + position.coords.altitude          + '\n' +
+                      'Accuracy: '          + position.coords.accuracy          + '\n' +
+                      'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+                      'Heading: '           + position.coords.heading           + '\n' +
+                      'Speed: '             + position.coords.speed             + '\n' +
+                      'Timestamp: '         + position.timestamp                + '\n');*/
+         
+                     // var geocodingAPI = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude+","+position.coords.longitude+"&key=AIzaSyBopfTws6HvZai0taBj3h-8u1sO_zDF15Q";
+         
+         var latlng = "55.397563, 10.39870099999996";
+         var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude+","+position.coords.longitude+"&key=AIzaSyBopfTws6HvZai0taBj3h-8u1sO_zDF15Q";
+         $.getJSON(url, function (data) {
+            for(var i=0;i<data.results.length;i++) {
+                var adress = data.results[0].formatted_address;
+                
+            }
+            //alert(adress);
+            $("#location").val(adress);
+         });
+            };
+         
+         
+            
+         
+            // onError Callback receives a PositionError object
+            //
+            function onError(error) {
+                alert('code: '    + error.code    + '\n' +
+                      'message: ' + error.message + '\n');
+            }
+         
+            navigator.geolocation.getCurrentPosition(onSuccess, onError);
+         
+            $("#scan").click(function(){
+                //alert("s");
+                cordova.plugins.barcodeScanner.scan(
+              function (result) {
+                  alert("We got a barcode\n" +
+                        "Result: " + result.text + "\n" +
+                        "Format: " + result.format + "\n" +
+                        "Cancelled: " + result.cancelled);
+              },
+              function (error) {
+                  alert("Scanning failed: " + error);
+              },
+              {
+                  preferFrontCamera : false, // iOS and Android
+                  showFlipCameraButton : true, // iOS and Android
+                  showTorchButton : true, // iOS and Android
+                  torchOn: false, // Android, launch with the torch switched on (if available)
+                  saveHistory: true, // Android, save scan history (default false)
+                  prompt : "Place the QR code inside the scan area", // Android
+                  resultDisplayDuration: 500, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
+                  formats : "QR_CODE,PDF_417", // default: all but PDF_417 and RSS_EXPANDED
+                  orientation : "portrait", // Android only (portrait|landscape), default unset so it rotates with the device
+                  disableAnimations : true, // iOS
+                  disableSuccessBeep: true // iOS and Android
+              }
+           );
+         
+         });
+         
+             
+         });
+         
+          
+      </script>
+   </head>
+   <body>
+      <button id="scan">Scan Code</button>
+      <input id="location" value="getting location..."/>
+      <script type="text/javascript" src="cordova.js"></script>
+      <script type="text/javascript" src="js/index.js"></script>
+   </body>
+</html>
