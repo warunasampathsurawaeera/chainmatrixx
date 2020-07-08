@@ -29,7 +29,7 @@
                      // var geocodingAPI = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude+","+position.coords.longitude+"&key=AIzaSyBopfTws6HvZai0taBj3h-8u1sO_zDF15Q";
          
          var latlng = "55.397563, 10.39870099999996";
-         var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude+","+position.coords.longitude+"&key=AIzaSyBopfTws6HvZai0taBj3h-8u1sO_zDF15Q";
+         var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude+","+position.coords.longitude+"&key=yourkey";
          $.getJSON(url, function (data) {
             for(var i=0;i<data.results.length;i++) {
                 var adress = data.results[0].formatted_address;
